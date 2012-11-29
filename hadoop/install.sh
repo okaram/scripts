@@ -23,11 +23,22 @@ ln -s $VERSION hadoop
 chown -R hduser.hadoop $VERSION
 chown hduser.hadoop $VERSION
 
-
+su - hduser
 cd hadoop/conf
 echo "export JAVA_HOME=/usr" >> hadoop-env.sh
 echo "export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true" >> hadoop-env.sh
-su - hduser
-ssh-keygen -t rsa -P ""
-cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
+
+#get configuration files
+rm core-site.xml
+wget https://raw.github.com/okaram/scripts/master/hadoop/conf/core-site.xml
+rm mapred-site.xml
+wget https://raw.github.com/okaram/scripts/master/hadoop/conf/mapred-site.xml
+rm hdfs-site.xml
+wget https://raw.github.com/okaram/scripts/master/hadoop/conf/hdfs-site.xml
+/usr/local/hadoop/bin/hadoop namenode -format
+
+#ssh stuff
+echo | ssh-keygen -t rsa -P ""
+cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+ssh -o StrictHostKeyChecking=no localhost exit # login once, to add to known hosts
