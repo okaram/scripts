@@ -1,6 +1,9 @@
 #!/bin/bash
 MIRROR=http://www.gtlib.gatech.edu/pub/apache/hadoop/common/hadoop-1.1.0/
 VERSION=hadoop-1.1.0
+
+set -xv
+
 #download hadoop, untar, put in /usr/local
 cd /tmp
 wget "$MIRROR/$VERSION".tar.gz
@@ -12,19 +15,13 @@ rm "$VERSION".tar.gz
 addgroup hadoop
 useradd  -G hadoop hduser -s /bin/bash
 
-# app folder
+# app folder; who uses this ????
 mkdir -p /app/hadoop/tmp
 chown hduser:hadoop /app/hadoop/tmp
 chmod 750 /app/hadoop/tmp
 
-# chmod, symbolic links
-cd /usr/local
-ln -s $VERSION hadoop
-chown -R hduser.hadoop $VERSION
-chown hduser.hadoop $VERSION
-
-su - hduser
-cd hadoop/conf
+#modify hadoop-env
+cd /usr/local/$VERSION/conf
 echo "export JAVA_HOME=/usr" >> hadoop-env.sh
 echo "export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true" >> hadoop-env.sh
 
@@ -36,9 +33,16 @@ rm mapred-site.xml
 wget https://raw.github.com/okaram/scripts/master/hadoop/conf/mapred-site.xml
 rm hdfs-site.xml
 wget https://raw.github.com/okaram/scripts/master/hadoop/conf/hdfs-site.xml
+
+# chmod, symbolic links
+cd /usr/local
+ln -s $VERSION hadoop
+chown -R hduser.hadoop $VERSION
+chown hduser.hadoop $VERSION
+
 /usr/local/hadoop/bin/hadoop namenode -format
 
 #ssh stuff
-echo | ssh-keygen -t rsa -P ""
-cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-ssh -o StrictHostKeyChecking=no localhost exit # login once, to add to known hosts
+su - hduser -c "echo | ssh-keygen -t rsa -P \"\""
+cat /home/hduser/.ssh/id_rsa.pub >> /home/hduser/.ssh/authorized_keys
+su - hduser -c "ssh -o StrictHostKeyChecking=no localhost echo "# login once, to add to known hosts
