@@ -46,3 +46,5 @@ chown hduser.hadoop $VERSION
 su - hduser -c "echo | ssh-keygen -t rsa -P \"\""
 cat /home/hduser/.ssh/id_rsa.pub >> /home/hduser/.ssh/authorized_keys
 su - hduser -c "ssh -o StrictHostKeyChecking=no localhost echo "# login once, to add to known hosts
+
+su - hduser -c "/usr/local/hadoop/bin/hadoop namenode -format"
