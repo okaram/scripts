@@ -2,7 +2,7 @@
 MIRROR=http://www.gtlib.gatech.edu/pub/apache/hadoop/common/hadoop-1.1.0/
 VERSION=hadoop-1.1.0
 
-apt-get install openjdk-7-jdk
+apt-get -y install openjdk-7-jdk
 
 #download hadoop, untar, put in /usr/local
 cd /tmp
