@@ -7,7 +7,7 @@ apt-get -y install openjdk-7-jdk
 #download hadoop, untar, put in /usr/local
 cd /tmp
 wget "$MIRROR/$VERSION".tar.gz
-tar -xzvf "$VERSION".tar.gz
+tar -xzf "$VERSION".tar.gz
 mv  $VERSION /usr/local
 rm "$VERSION".tar.gz
 
