@@ -40,7 +40,7 @@ ln -s $VERSION hadoop
 chown -R hduser.hadoop $VERSION
 chown hduser.hadoop $VERSION
 
-/usr/local/hadoop/bin/hadoop namenode -format
+su - hduser -c "/usr/local/hadoop/bin/hadoop namenode -format"
 
 #ssh stuff
 su - hduser -c "echo | ssh-keygen -t rsa -P \"\""
